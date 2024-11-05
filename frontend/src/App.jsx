@@ -1,12 +1,11 @@
 import './App.css'
-import ChangeMode from './component/ChangeMode'
-
+import Header from './component/Header/Header'
 function App() {
 
 
   return (
     <>
-     <ChangeMode/>
+     <Header/>
     </>
   )
 }

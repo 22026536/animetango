@@ -15,6 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Type from "./Type";
 import Danhmuc from "./Danhmuc";
 import Level from "./Level";
+import Login from "../Account/Login";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const theme = useTheme();
@@ -236,6 +238,7 @@ export default function Header() {
   );
 }
 function PositionedMenu() {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -244,6 +247,15 @@ function PositionedMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [loginClick, setLoginClick] = useState(false)
+  const ClickLogin = () => {
+    setAnchorEl(null);
+    setLoginClick(!loginClick)
+  }
+  const ClickSignup = () => {
+    setAnchorEl(null);
+    navigate('/signup')
+  }
 
   return (
     <div>
@@ -273,9 +285,24 @@ function PositionedMenu() {
         }}
         style={{ marginTop: "30px" }}
       >
-        <MenuItem onClick={handleClose}>Đăng ký</MenuItem>
-        <MenuItem onClick={handleClose}>Đăng nhập</MenuItem>
+        <MenuItem onClick={ClickSignup}>Đăng ký</MenuItem>
+        <MenuItem onClick={ClickLogin}>Đăng nhập</MenuItem>
       </Menu>
+      {loginClick && <>
+              <Box
+                sx={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  zIndex: 11,
+                }}
+                onClick={ClickLogin} />{" "}
+              <Box sx={{position: 'absolute', zIndex: '20', top: '30vh', left: '35vw'}}><Login CloseIconn={ClickLogin}></Login></Box>  
+              
+            </>}
     </div>
   );
 }

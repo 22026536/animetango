@@ -4,7 +4,7 @@ import "./Header.css";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useTheme } from "@emotion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,7 +28,33 @@ export default function Header() {
   const [Typehover, setTypehover] = useState(false);
   const [Danhmuchover, setDanhmuchover] = useState(false);
   const [Levelhover, setLevelhover] = useState(false);
-  const [isLogin, setIsLogin ] = useState(true)
+  const [isLogin, setIsLogin ] = useState(false)
+  const [userInfor, setUserInfor] = useState([]);
+  useEffect(() => {
+    fetch('https://animetangobackend.onrender.com/api/userInfo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        console.log(responseData)
+        if(responseData.success){
+          setIsLogin(true)
+          setUserInfor(responseData.userInfo[0])
+        }
+        else{
+          setIsLogin(false)
+        }
+        
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
+
+
+
+
   return (
     <Box
       sx={{

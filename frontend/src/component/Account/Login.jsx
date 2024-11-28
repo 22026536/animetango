@@ -43,57 +43,60 @@ const Login = ({onSetForgotPassword, CloseIconn}) => {
         navigate('/signup')
   }
   
-  // const handleSubmit = async (e) => {
-  //    e.preventDefault();
+  const handleSubmit = async (e) => {
+     e.preventDefault();
+     console.log('1')
 
-  //   try {
-  //     const response = await fetch('/api/login', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData)
-  //     });
+    try {
+      const response = await fetch('https://animetangobackend.onrender.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
       
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       if (data.success) {
-  //         setOkMessage(`Đăng nhập thành công: ${data.message}`)
-  //         setTimeout(() => {
-  //           window.location.reload();
-  //         }, 1500);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setOkMessage(`Đăng nhập thành công: ${data.message}`)
+          Login 
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
           
-  //       } else {
-  //         const error__alert =`Đăng nhập thất bại: ${data.message}`;
-  //         console.log(error__alert);
-  //         setErrorMessage(`Đăng nhập thất bại: ${data.message}`)
-  //       }
-  //     } else {
-  //       // Xử lý lỗi
-  //       console.error('Lỗi khi đăng nhập:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Lỗi mạng:', error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (errorMessage) {
-  //     const timer = setTimeout(() => {
-  //       setErrorMessage('');
-  //     }, 2000); // 2 giây
+        } else {
+          const error__alert =`Đăng nhập thất bại: ${data.message}`;
+          console.log(error__alert);
+          setErrorMessage(`Đăng nhập thất bại: ${data.message}`)
+        }
+      } else {
+        // Xử lý lỗi
+        console.error('Lỗi khi đăng nhập:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Lỗi mạng:', error);
+    }
+  };
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage('');
+      }, 2000); // 2 giây
 
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [errorMessage]);
-  // useEffect(() => {
-  //   if (okMessage) {
-  //     const timerr = setTimeout(() => {
-  //       setOkMessage('');
-  //     }, 2000); 
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+  useEffect(() => {
+    if (okMessage) {
+      const timerr = setTimeout(() => {
+        setOkMessage('');
+      }, 2000); 
 
-  //     return () => clearTimeout(timerr);
-  //   }
-  // }, [okMessage]);
+      return () => clearTimeout(timerr);
+    }
+  }, [okMessage]);
 
   return (
     <Box
@@ -121,8 +124,8 @@ const Login = ({onSetForgotPassword, CloseIconn}) => {
             {okMessage}
           </Alert>
         )}
-      <form > 
-      {/* onSubmit={handleSubmit} */}
+      <form  
+      onSubmit={handleSubmit}>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
     <label className="user__name__label" style={{ color: '#000', marginLeft: '10%'}}>Tài khoản</label>
     <input

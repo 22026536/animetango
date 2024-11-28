@@ -14,6 +14,10 @@ export default function Level() {
         { label: 'N5', url: '/level/N5' },
     
     ];
+    const handleClick = (level) => {
+        localStorage.setItem('level', level);
+    };
+
 
     return (
         <Box sx={{position: 'absolute'}} className ='Child'>
@@ -47,6 +51,7 @@ export default function Level() {
                 >
                     <Link
                         href={link.url} 
+                        onClick ={() => handleClick(link.label)}
                         style={{
                             textDecoration: 'none',
                             color: theme.palette.mode === 'light' ? '#000' : 'white',

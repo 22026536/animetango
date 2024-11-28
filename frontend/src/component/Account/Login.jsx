@@ -45,7 +45,6 @@ const Login = ({onSetForgotPassword, CloseIconn}) => {
   
   // const handleSubmit = async (e) => {
   //    e.preventDefault();
- 
 
   //   try {
   //     const response = await fetch('/api/login', {

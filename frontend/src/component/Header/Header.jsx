@@ -17,6 +17,7 @@ import Danhmuc from "./Danhmuc";
 import Level from "./Level";
 import Login from "../Account/Login";
 import { useNavigate } from "react-router-dom";
+import AccountHeader from "../Account/AccountHeader";
 
 export default function Header() {
   const theme = useTheme();
@@ -27,6 +28,7 @@ export default function Header() {
   const [Typehover, setTypehover] = useState(false);
   const [Danhmuchover, setDanhmuchover] = useState(false);
   const [Levelhover, setLevelhover] = useState(false);
+  const [isLogin, setIsLogin ] = useState(true)
   return (
     <Box
       sx={{
@@ -49,7 +51,7 @@ export default function Header() {
       <Link
         className="web__name"
         style={{ cursor: "pointer", textDecoration: "none" }}
-        href="#"
+        href="/home"
       >
         <img className="logo" src="/logo.png"></img>
         <Typography
@@ -150,9 +152,10 @@ export default function Header() {
             alignItems: "center",
             cursor: "pointer",
           }}
+          href='/gioi_thieu'
           className="navbar__child"
         >
-          Giới thiệu{" "}
+          Giới thiệu
         </Link>
       </div>
 
@@ -231,7 +234,8 @@ export default function Header() {
         )}
       </div>
       <Box sx={{ marginRight: "16px", marginLeft: "20px" }}>
-        <PositionedMenu />
+        {!isLogin && <PositionedMenu />}
+        {isLogin && <AccountHeader name= 'hoang diep'></AccountHeader>}
       </Box>
       <ChangeMode />
     </Box>

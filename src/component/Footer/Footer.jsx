@@ -1,15 +1,11 @@
-import React from "react";
-import "./Footer.css";
-import { useTheme } from "@emotion/react";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import "./footer.css";
-import Link from "@mui/material/Link";
+import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import PhoneIcon from "@mui/icons-material/Phone";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import EmailIcon from "@mui/icons-material/Email";
+import Link from "@mui/material/Link";
+import React from "react";
+import "./Footer.css";
 export default function Footer() {
   const renderBubbles = () => {
     let bubbles = [];

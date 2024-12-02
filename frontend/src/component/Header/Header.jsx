@@ -52,9 +52,6 @@ export default function Header() {
       .catch(error => console.error('Error:', error));
   }, []);
 
-
-
-
   return (
     <Box
       sx={{
@@ -121,7 +118,7 @@ export default function Header() {
             }}
             className="navbar__child"
           >
-            Danh mục
+            Category
             <KeyboardArrowDownIcon className="rotate-icon" />
           </Link>
           {Danhmuchover && <Danhmuc />}
@@ -143,7 +140,7 @@ export default function Header() {
             }}
             className="navbar__child"
           >
-            Thể loại
+             Genre
             <KeyboardArrowDownIcon className="rotate-icon" />
           </Link>
           {Typehover && <Type />}
@@ -164,7 +161,7 @@ export default function Header() {
             }}
             className="navbar__child"
           >
-            Trình độ <KeyboardArrowDownIcon className="rotate-icon" />
+            Level <KeyboardArrowDownIcon className="rotate-icon" />
           </Link>
           {Levelhover && <Level />}
         </Box>
@@ -178,10 +175,10 @@ export default function Header() {
             alignItems: "center",
             cursor: "pointer",
           }}
-          href='/gioi_thieu'
+          href='/introduce'
           className="navbar__child"
         >
-          Giới thiệu
+          About us
         </Link>
       </div>
 
@@ -235,7 +232,7 @@ export default function Header() {
             />
             <input
               type="text"
-              placeholder="Tìm kiếm....."
+              placeholder="Search....."
               style={{
                 width: "100%",
                 outline: "none",
@@ -297,7 +294,7 @@ function PositionedMenu() {
         onClick={handleClick}
         sx={{ fontSize: "18px", cursor: "pointer" }}
       >
-        Tài khoản?
+        Account?
       </Box>
       <Menu
         id="demo-positioned-menu"
@@ -315,8 +312,8 @@ function PositionedMenu() {
         }}
         style={{ marginTop: "30px" }}
       >
-        <MenuItem onClick={ClickSignup}>Đăng ký</MenuItem>
-        <MenuItem onClick={ClickLogin}>Đăng nhập</MenuItem>
+        <MenuItem onClick={ClickSignup}>Sign up</MenuItem>
+        <MenuItem onClick={ClickLogin}>Login</MenuItem>
       </Menu>
       {loginClick && <>
               <Box

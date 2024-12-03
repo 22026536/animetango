@@ -24,7 +24,7 @@ const SubmitButton = styled.button`
 
 export default function Profile() {
 
-
+    const jwt = localStorage.getItem('jwt')
     const [login, setLogin] = useState('');
     const [userInfor, setUserInfor] = useState([]);
     const [changeClick, setChangeClick] = useState(false)
@@ -48,10 +48,10 @@ export default function Profile() {
       
       const formData = new FormData();
       formData.append('image', file);
-      
+      formData.append('jwt', jwt);
       try {
         setUploadStatus('Đang tải lên...');
-        const response = await axios.post('/api/uploadImage', formData, {
+        const response = await axios.post('https://animetangobackend.onrender.com/api/uploadImage', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -66,24 +66,24 @@ export default function Profile() {
         }
       } catch (error) {
         console.error('Lỗi tải lên:', error);
-        setUploadStatus('Tải lên thất bại!');
+        setUploadStatus(`Tải lên thất bại! ${error}`);
       }
       console.log(uploadStatus)
     };
-    
     useEffect(() => {
-      fetch('/api/userInfo', {
+      fetch('https://animetangobackend.onrender.com/api/userInfo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({jwt : jwt})
       })
         .then(response => response.json())
         .then(responseData => {
           if(responseData.success){
             setLogin(true)
-            setUserInfor(responseData.userInfo[0])
-            setImage(responseData.userInfo[0].user_img|| defaultImage)
+            setUserInfor(responseData.userInfo)
+            setImage(responseData.userInfo.user_img|| defaultImage)
           }
           else{
             setLogin(false)
@@ -97,6 +97,8 @@ export default function Profile() {
         phone__number: '',
         gmail: '',
         sex:'',
+        level: '',
+        jwt: jwt,
       });
     useEffect(() => {
         if (userInfor) {
@@ -104,7 +106,9 @@ export default function Profile() {
             name: userInfor.full_name || '',
             phone__number: userInfor.phone_number || '',
             gmail: userInfor.email || '',
-            sex:userInfor.sex || ''
+            sex:userInfor.sex || '',
+            level: userInfor.level || '',
+            jwt: jwt,
           });
         }
       }, [userInfor]);
@@ -117,7 +121,7 @@ export default function Profile() {
       };
       const handleSubmit = async () => {
         try {
-          const response = await fetch('/api/userInfo/update', {
+          const response = await fetch('https://animetangobackend.onrender.com/api/userInfo/update', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -208,6 +212,16 @@ export default function Profile() {
     Nữ
   </label>
          </div>
+         <Box sx ={{gap: 1, display: 'flex', alignItems: 'center'}}>
+         <label style={{color: 'black'}}>Trình độ hiện tại: </label>
+            <select className="level" value={formData.level} disabled={!changeClick} name="level" onChange={handleChange} style={{outline: 'none', borderRadius: '7px', border: '1px solid #e6e4e3', height: '35px', width: '10vw', fontSize: '17px', paddingLeft: '7px'}}>
+          <option value="N1">N1</option>
+          <option value="N2">N2</option>
+          <option value="N3">N3</option>
+          <option value="N4">N4</option>
+          <option value="N5">N5</option>
+          </select>
+          </Box>
          {!changeClick && <Button onClick={changeClickButton} style={{width: '100px'}}>Chỉnh sửa</Button>}
       </form>
       {changeClick && <SubmitButton onClick={submit}>Cập nhật</SubmitButton>}

@@ -18,6 +18,7 @@ import Level from "./Level";
 import Login from "../Account/Login";
 import { useNavigate } from "react-router-dom";
 import AccountHeader from "../Account/AccountHeader";
+import { Skeleton } from "@mui/material";
 
 export default function Header() {
   const theme = useTheme();
@@ -30,23 +31,27 @@ export default function Header() {
   const [Levelhover, setLevelhover] = useState(false);
   const [isLogin, setIsLogin ] = useState(false)
   const [userInfor, setUserInfor] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const jwt = localStorage.getItem('jwt')
   useEffect(() => {
     fetch('https://animetangobackend.onrender.com/api/userInfo', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({jwt : jwt})
     })
       .then(response => response.json())
       .then(responseData => {
-        console.log(responseData)
         if(responseData.success){
           setIsLogin(true)
-          setUserInfor(responseData.userInfo[0])
+          setUserInfor(responseData.userInfo)
+          console.log(responseData)
         }
         else{
           setIsLogin(false)
         }
+        setLoading(false)
         
       })
       .catch(error => console.error('Error:', error));
@@ -95,11 +100,12 @@ export default function Header() {
       <div
         style={{
           display: "flex",
-          width: "35%",
+          width: "27%",
           height: "100%",
-          gap: "32px",
+          gap: "5%",
           justifyContent: "center",
           alignItems: "center",
+          marginLeft: '15px'
         }}
       >
         <Box
@@ -256,9 +262,14 @@ export default function Header() {
           </Box>
         )}
       </div>
-      <Box sx={{ marginRight: "16px", marginLeft: "20px" }}>
-        {!isLogin && <PositionedMenu />}
-        {isLogin && <AccountHeader name= 'hoang diep'></AccountHeader>}
+      <Box sx={{ marginRight: "16px", marginLeft: "20px" , width: 'auto', maxWidth: '17%'}}>
+        
+        {!isLogin && !loading && <PositionedMenu />}
+        {isLogin && !loading && userInfor && <Box><AccountHeader name= {userInfor.full_name} image ={userInfor.user_img}></AccountHeader></Box>}
+        {loading && <Skeleton variant="rectangular" 
+          width={100} 
+          height={20} 
+          sx={{ borderRadius: '8px', margin: '10px' }} ></Skeleton>}
       </Box>
       <ChangeMode />
     </Box>

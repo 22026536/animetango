@@ -13,6 +13,7 @@ import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 import { Button, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../component/Header/Header';
+import Footer from '../component/Footer/Footer';
 
 function createSlug(name) {
     return name
@@ -21,47 +22,93 @@ function createSlug(name) {
       .replace(/-+/g, '-'); }
   export default function FilmWatch() {
     const theme = useTheme();
-    const navigate = useNavigate()
-      const [data, setData] = useState()
-      const [loading, setLoading] = useState(true)
-        const fetchFilm = async () => {
-          try {
-            const response = await fetch('https://animetangobackend.onrender.com/api/anime/animeInfo', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({anime_id : localStorage.getItem('film_id')}),
-            });
-      
-            if (response.ok) {
-              const data = await response.json();
-              console.log(data)
-              setData(data)
-              setLoading(false)
-      
-            } else {
-              console.error('Lỗi khi đăng nhập:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Lỗi mạng:', error);
-          }
-        };
-      
-        useEffect(() => {
-          const fetchData = async () => {
-            await fetchFilm();
-          };
-          fetchData();
-        }, []);
-        const episodeClick = (episode_id, name, episode) => {
-            localStorage.setItem('episode_id', episode_id)
-            localStorage.setItem('episode', episode)
-            navigate(`/film/${name}/${episode}`)
-          }
+const navigate = useNavigate();
+const [data, setData] = useState();
+const [loading, setLoading] = useState(true);
+const [isLastestEpisode, setIsLastestEpisode] = useState(false);
+
+const fetchFilm = async () => {
+  try {
+    const response = await fetch('https://animetangobackend.onrender.com/api/anime/animeInfo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ anime_id: localStorage.getItem('film_id') }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      setData(data);
+      setLoading(false);
+    } else {
+      console.error('Lỗi khi lấy thông tin phim:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Lỗi mạng:', error);
+  }
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    await fetchFilm();
+  };
+  fetchData();
+}, []);
+
+
+useEffect(() => {
+  if (data && localStorage.getItem('episode_id') !== data.episodes[data.episodes.length - 1].Episode_id) {
+    setIsLastestEpisode(true); 
+  } else {
+    setIsLastestEpisode(false);
+  }
+}, [data]); 
+
+const episodeClick = (episode_id, name, episode) => {
+  localStorage.setItem('episode_id', episode_id);
+  localStorage.setItem('episode', episode);
+  navigate(`/film/${name}/${episode}`);
+};
+
+const jwt = localStorage.getItem('jwt');
+
+const fetchWatch = async () => {
+  try {
+    const response = await fetch('https://animetangobackend.onrender.com/api/user/watch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        episode_id: localStorage.getItem('episode_id'),
+        jwt: jwt,
+        anime_id: localStorage.getItem('film_id'), 
+        isLastestEpisode: isLastestEpisode,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    } else {
+      console.error('Lỗi khi gửi:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Lỗi mạng:', error);
+  }
+};
+
+useEffect(() => {
+  if (localStorage.getItem('episode_id')) {
+    fetchWatch(); 
+  }
+}, [isLastestEpisode]); 
+          
     return (
       <>
-      <Header />
+      <Header/>
       {!loading && 
       <Box sx={{ marginLeft: '10%',width: '80%', height: 'auto', minHeight: '40vh', marginTop: '200px', backgroundColor: theme.palette.mode == 'dark' ? '#333332' : '#fafafa', borderRadius: '12px', display: 'flex', alignItems: 'center', paddingLeft: '7%', gap: '5%', fontSize: '18px'}}>
       <img className='infoImg' src = {data.anime['Image URL']} style={{ cursor: 'pointer', width: '16%', height: 'auto', maxHeight: '35vh', minHeight: '30vh'}}></img>
@@ -122,15 +169,15 @@ function createSlug(name) {
     </Box>
     {data.episodes.map((item, index) => {
       return item.Episode_id == localStorage.getItem('episode_id') && (
-        <div style={{ overflow: 'hidden', width: '1250px', height: '530px', position: 'relative', marginTop: '20px', marginLeft: `calc((100vw - 1250px) / 2)`}}>
+        <div style={{ overflow: 'hidden', width: '1163px', height: '592px', position: 'relative', marginTop: '20px', marginLeft: `calc((100vw - 1163px) / 2)`}}>
   <iframe
     allowFullScreen
     key={index}
     src={item.Url_link}
     style={{
       position: 'absolute', 
-      top: '-50px',
-      left: '0',
+      top: '-70px',
+      left: '-15px',
       width: '1200px',
       height: '700px', 
       border: 'none',
@@ -158,7 +205,7 @@ function createSlug(name) {
           
           </Box>}
   
-  
+  {/* <Footer/> */}
       </>
     )
   }

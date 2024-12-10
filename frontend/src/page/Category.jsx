@@ -1,16 +1,17 @@
-import  Box from '@mui/material/Box'
-import React, { useState } from 'react'
+import React from 'react'
 import Header from '../component/Header/Header'
+import { Box } from '@mui/material'
+import Footer from '../component/Footer/Footer'
+import { useState, useEffect } from 'react'
+import FilmCard from '../Film/FilmCard'
 import { useTheme } from '@emotion/react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useEffect } from 'react';
-import FilmCard from '../Film/FilmCard';
-import FilmPage from '../Film/FilmPage';
-export default function Level() {
+import FilmPage from '../Film/FilmPage'
+export default function Category() {
+  const theme = useTheme()
   const [data, setData] = useState()
   const [loading, setLoading] = useState(true)
-    const theme = useTheme();
-    const level = localStorage.getItem('level')
+  const type = localStorage.getItem('type')
     const fetchFilm = async () => {
       try {
         const response = await fetch('https://animetangobackend.onrender.com/api/anime/search', {
@@ -18,7 +19,7 @@ export default function Level() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({JapaneseLevel : level, n: '150'}),
+          body: JSON.stringify({Type : type, n: '150'}),
         });
   
         if (response.ok) {
@@ -28,11 +29,11 @@ export default function Level() {
           setLoading(false)
   
         } else {
-          console.error('Lỗi khi đăng nhập:', response.statusText);
+          console.error('Error during fetch:', response.statusText);
+        } 
+        } catch (error) {
+          console.error('Network error:', error);
         }
-      } catch (error) {
-        console.error('Lỗi mạng:', error);
-      }
     };
   
     useEffect(() => {
@@ -43,17 +44,19 @@ export default function Level() {
     }, []);
   return (
     <Box>
-    <Header/>
-    <div style={{ marginTop: '120px', fontSize: '30px', marginLeft: '2.4%', fontFamily: 'Montserrat', fontWeight: '600', color: theme.palette.mode === 'dark' ? '#c0c2c4' : '#EF4444'}}>{`LEVEL: ${level}`}</div>
+        <Header></Header>
+        <div style={{ marginTop: '120px', fontSize: '30px', marginLeft: '2.4%', fontFamily: 'Montserrat', fontWeight: '600', color: theme.palette.mode === 'dark' ? '#c0c2c4' : '#EF4444'}}>{`Category: ${type}`}</div>
     <div style = {{ display: 'flex', fontSize: '25px', alignItems: 'center', marginLeft: '2.4%', marginTop: '1%', fontFamily: 'mONTSERRAT' }}>
     <div>{`LIST OF FILMS`}</div>
     <ArrowForwardIosIcon style={{ marginTop: '2px', fontSize: '15px', marginTop: '4px'}}/>
     <ArrowForwardIosIcon style={{marginLeft: '-7px', marginTop: '4px', fontSize: '15px'}}/>
      
     </div>
-    {!loading && <Box>
+
+     {!loading && <Box sx={{width: '80%'}}>
       <FilmPage data ={data}></FilmPage>
       </Box>}
+        {/* <Footer></Footer> */}
     </Box>
   )
 }

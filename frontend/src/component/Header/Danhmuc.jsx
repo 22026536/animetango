@@ -26,11 +26,12 @@ export default function Danhmuc() {
                 marginLeft: '-50px',
                 borderRadius: '5px',
                 border: `1.5px solid ${theme.palette.mode === 'dark' ? 'white' : 'grey'}`,
-                fontSize: '18px'
+                fontSize: '15px'
             }}
         >
             {links.map((link, index) => (
                 <Box
+                   
                     key={index}
                     className='type__div'
                     sx={{
@@ -44,6 +45,7 @@ export default function Danhmuc() {
                     }}
                 >
                     <Link
+                        onClick={() => localStorage.setItem('type', link.label)}
                         href={link.url} 
                         style={{
                             textDecoration: 'none',

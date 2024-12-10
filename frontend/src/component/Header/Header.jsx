@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import AccountHeader from "../Account/AccountHeader";
 import { Skeleton } from "@mui/material";
 import ForgetPassword from "../Account/ForgetPassword";
+import ChatBot from "../chatBot/ChatBot"
+import ChatBotToggle from "../chatBot/ChatBotToggle"
 
 export default function Header() {
   const theme = useTheme();
@@ -48,7 +50,6 @@ export default function Header() {
         if(responseData.success){
           setIsLogin(true)
           setUserInfor(responseData.userInfo)
-          console.log(responseData)
         }
         else{
           setIsLogin(false)
@@ -58,6 +59,10 @@ export default function Header() {
       })
       .catch(error => console.error('Error:', error));
   }, []);
+  const [isOpen, setIsOpen] = useState(false); 
+  const toggleChatClick = () => {
+    setIsOpen(!isOpen); 
+  };
 
   return (
     <Box
@@ -119,7 +124,7 @@ export default function Header() {
             style={{
               textDecoration: "none",
               color: theme.palette.mode === "light" ? "black" : "white",
-              fontSize: "18px",
+              fontSize: "16px",
               display: "flex",
               alignItems: "center",
               cursor: "pointer",
@@ -141,7 +146,7 @@ export default function Header() {
             style={{
               textDecoration: "none",
               color: theme.palette.mode === "light" ? "black" : "white",
-              fontSize: "18px",
+              fontSize: "16px",
               display: "flex",
               alignItems: "center",
               cursor: "pointer",
@@ -162,7 +167,7 @@ export default function Header() {
             style={{
               textDecoration: "none",
               color: theme.palette.mode === "light" ? "black" : "white",
-              fontSize: "18px",
+              fontSize: "16px",
               display: "flex",
               alignItems: "center",
               cursor: "pointer",
@@ -178,7 +183,7 @@ export default function Header() {
           style={{
             textDecoration: "none",
             color: theme.palette.mode === "light" ? "black" : "white",
-            fontSize: "18px",
+            fontSize: "16px",
             display: "flex",
             alignItems: "center",
             cursor: "pointer",
@@ -274,6 +279,13 @@ export default function Header() {
           sx={{ borderRadius: '8px', margin: '10px' }} ></Skeleton>}
       </Box>
       <ChangeMode />
+      {!isOpen && <Box sx={{position:'fixed', right: '3vw', top: '90vh', zIndex: '10000'}}>
+        <ChatBotToggle toggleChat={toggleChatClick} ></ChatBotToggle>
+        </Box>}
+        {isOpen && <Box sx={{position:'fixed', right: '3vw',top:'50vh', width: '23vw', height: '35vh', zIndex: '10000'}}>
+          
+          <ChatBot closeClick={toggleChatClick}></ChatBot>
+          </Box>}
 
     </Box>
   );
@@ -313,7 +325,7 @@ function PositionedMenu() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ fontSize: "18px", cursor: "pointer" }}
+        sx={{ fontSize: "16px", cursor: "pointer" }}
       >
         Account?
       </Box>

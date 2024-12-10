@@ -25,6 +25,7 @@ import ChatBotToggle from "../chatBot/ChatBotToggle"
 
 export default function Header() {
   const theme = useTheme();
+  const navigate = useNavigate()
   const [searchClick, setSearchClick] = useState(false);
   const ClickSearch = () => {
     setSearchClick(!searchClick);
@@ -36,7 +37,7 @@ export default function Header() {
   const [userInfor, setUserInfor] = useState([]);
   const [loading, setLoading] = useState(true)
   const jwt = localStorage.getItem('jwt')
-  
+  const [query, setQuery] =useState()
   useEffect(() => {
     fetch('https://animetangobackend.onrender.com/api/userInfo', {
       method: 'POST',
@@ -63,6 +64,15 @@ export default function Header() {
   const toggleChatClick = () => {
     setIsOpen(!isOpen); 
   };
+
+  const searchh = (query) => {
+    localStorage.setItem('query', query)
+    navigate(`/search/${query}`)
+    window.location.reload()
+  }
+  const searchChange = (e) => {
+    setQuery(e.target.value); // Cập nhật giá trị comment khi textarea thay đổi
+};
 
   return (
     <Box
@@ -236,16 +246,20 @@ export default function Header() {
             }}
           >
             <SearchIcon
+            onClick= {() => searchh(query)}
               style={{
                 position: "absolute",
                 top: "7px",
                 left: "5px",
                 color: "black",
+                cursor: 'pointer'
               }}
             />
             <input
               type="text"
               placeholder="Search....."
+              onChange={searchChange}
+              value={query}
               style={{
                 width: "100%",
                 outline: "none",

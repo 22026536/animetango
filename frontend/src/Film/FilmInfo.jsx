@@ -13,6 +13,7 @@ import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 import { Button, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FilmRate from './FilmRate';
+import FilmComment from './FilmComment';
 function createSlug(name) {
   return name
     .trim() 
@@ -75,34 +76,6 @@ export default function FilmInfo() {
         };
       }, [evaluateClick]);
 
-
-      // const fetchRate = async () => {
-      //   try {
-      //     const response = await fetch('https://animetangobackend.onrender.com/api/user/like', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({anime_id : localStorage.getItem('film_id'), jwt: localStorage.getItem('jwt')}),
-      //     });
-    
-      //     if (response.ok) {
-      //       const data = await response.json();
-      //       console.log(data)
-      //     } else {
-      //       console.error('Error during fetch:', response.statusText);
-      //     }
-      //   } catch (error) {
-      //     console.error('Network error:', error);
-      //   }
-      // };
-    
-      // useEffect(() => {
-      //   const fetchData = async () => {
-      //     await fetchRate();
-      //   };
-      //   fetchData();
-      // }, []);
       const ClickInfo = () => {
         setInfoClick(true)
         setWatchClick(false)
@@ -150,7 +123,7 @@ export default function FilmInfo() {
 <div style={{display: 'flex', gap: '4%', marginTop: '10px'}}>
      <Box sx ={{alignItems: 'center', display: 'flex', gap: '3px', borderRadius: '5px', backgroundColor: theme.palette.mode === 'light' ? 'black': 'white', color: theme.palette.mode === 'dark' ? 'black': 'white', paddingX:'7px', paddingY: '3px', cursor: 'pointer'}}><FavoriteIcon/>Like</Box>
      <Box sx ={{alignItems: 'center', display: 'flex', gap: '3px', borderRadius: '5px', backgroundColor: theme.palette.mode === 'light' ? 'black': 'white', color: theme.palette.mode === 'dark' ? 'black': 'white', paddingX:'7px', paddingY: '3px', cursor: 'pointer'}} onClick= {ClickEvaluate}>Evaluate</Box>
-     <Box sx ={{alignItems: 'center', display: 'flex', gap: '3px', borderRadius: '5px', backgroundColor: theme.palette.mode === 'light' ? 'black': 'white', color: theme.palette.mode === 'dark' ? 'black': 'white', paddingX:'7px', paddingY: '3px', cursor: 'pointer'}}>Comment</Box>
+     <Box sx ={{alignItems: 'center', display: 'flex', gap: '3px', borderRadius: '5px', backgroundColor: theme.palette.mode === 'light' ? 'black': 'white', color: theme.palette.mode === 'dark' ? 'black': 'white', paddingX:'7px', paddingY: '3px', cursor: 'pointer'}} onClick= {ClickComment}>Comment</Box>
 </div>
 <div style={{display: 'flex', justifyContent: 'space-between', width: '50vw', marginTop: '20px'}}>
   <Box>
@@ -219,6 +192,23 @@ export default function FilmInfo() {
     onClick = {ClickEvaluate}
   ></Box>
   <FilmRate name = {data.anime.Name} img ={data.anime['Image URL']} id ={data.anime.Anime_id} rate = {data.rated}/>
+     </>}
+     {comment && <>
+      <Box
+    sx={{
+      position: "absolute",
+      zIndex: "10",
+      width:'100vw',
+      height: '200vh',
+      backgroundColor: 'rgba(76, 79, 77, 0.5)',
+      top: '0',
+      left: '0',
+       overflow: 'hidden'
+    }}
+    autoComplete="off"
+    onClick = {ClickComment}
+  ></Box>
+  <FilmComment name = {data.anime.Name} img ={data.anime['Image URL']} id ={data.anime.Anime_id} />
      </>}
 
 

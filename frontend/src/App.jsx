@@ -14,6 +14,7 @@ import FilmNew from "./page/FilmNew";
 import FilmMostFavorite from "./page/FilmMostFavorite";
 import Bayes from "./page/Bayes";
 import Decision from "./page/Decision";
+import Search from "./page/Search";
 function App() {
   return (
     <Router>
@@ -33,6 +34,7 @@ function App() {
         <Route path="/most_favorite" element= {<FilmMostFavorite/>}/>
         <Route path="/recommend_naiveBayes" element= {<Bayes/>}/>
         <Route path="/recommend_decisionTree" element= {<Decision/>}/>
+        <Route path="/search/:query" element= {<Search/>}/>
       </Routes>
     </Router>);
 

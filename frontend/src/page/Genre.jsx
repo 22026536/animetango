@@ -57,7 +57,7 @@ export default function Genre() {
       <FilmPage data ={data}></FilmPage>
       </Box>}
        
-            <Footer></Footer>
+            {/* <Footer></Footer> */}
         </Box>
       )
 }

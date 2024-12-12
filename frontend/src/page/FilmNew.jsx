@@ -50,7 +50,7 @@ export default function FilmNew() {
     {!loading && <Box>
       <FilmPage data ={data}></FilmPage>
       </Box>}
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </Box>
   )
 }

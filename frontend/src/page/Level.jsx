@@ -55,7 +55,7 @@ export default function Level() {
     {!loading && <Box>
       <FilmPage data ={data}></FilmPage>
       </Box>}
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </Box>
   )
 }

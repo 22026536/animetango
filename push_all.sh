@@ -1,30 +1,27 @@
 #!/bin/bash
 
-# Push vào repository chính
-echo "Pushing changes to the main repository..."
-git push origin main || exit 1  # Nếu push chính thất bại, dừng script
-
-# Danh sách các service con với các remote tương ứng
-services=("backend/userService" "backend/animeService" "backend/userAnimeService" "backend/adminService" "backend/KNNService" "backend/DecisionTreeService" "backend/NaiveBayesService"  "backend/gateway" "frontend")
-
-# Push vào từng service con
-for service in "${services[@]}"; do
-  echo "Pushing to $service..."
-
-  # Kiểm tra xem thư mục của service có tồn tại hay không
-  if [ -d "$service" ]; then
-    cd $service
-
-    # Pull các thay đổi từ remote để tránh xung đột
-    git pull $service main || echo "Failed to pull from $service"
-
-    # Push các thay đổi lên remote
-    git push $service main || echo "Failed to push to $service"
-
-    cd -  # Quay lại thư mục gốc
+# Commit và push thay đổi trong tất cả các submodule
+echo "Committing changes in submodules..."
+git submodule foreach --recursive '
+  echo "Processing submodule: $name"
+  git status
+  if [ -n "$(git status --porcelain)" ]; then
+    git add .
+    git commit -m "Update submodule changes"
+    git push
   else
-    echo "Directory $service does not exist!"
+    echo "No changes to commit in $name"
   fi
-done
+'
 
-echo "All services have been pushed (if no errors above)."
+# Commit và push thay đổi trong repo chính
+echo "Committing changes in main repository..."
+git add .
+if [ -n "$(git status --porcelain)" ]; then
+  git commit -m "Update main repository and submodule pointers"
+  git push
+else
+  echo "No changes to commit in main repository"
+fi
+
+echo "All changes pushed successfully!"

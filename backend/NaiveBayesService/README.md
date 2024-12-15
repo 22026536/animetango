@@ -1,2 +1,0 @@
-# recommendNaiveBayes
-# naiveBayesService

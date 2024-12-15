@@ -1,2 +1,0 @@
-# recommendKNN
-# KNNService

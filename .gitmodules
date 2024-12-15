@@ -25,4 +25,3 @@
 [submodule "backend/gateway"]
 	path = backend/gateway
 	url = https://github.com/22026536/gateway.git
->>>>>>> 3439e16826727c6931674e1c8f785cfcf2684df7

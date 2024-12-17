@@ -1,3 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/hoangdiep271024/anime.git
 [submodule "backend/userService"]
 	path = backend/userService
 	url = https://github.com/22026536/userService.git
